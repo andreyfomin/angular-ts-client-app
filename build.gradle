@@ -1,0 +1,60 @@
+apply plugin: 'java'
+
+jar {
+    baseName = 'angular-ts-client-app'
+    version = '0.0.1-SNAPSHOT'
+}
+
+task npm_install(type: Exec) {
+    workingDir 'src/main'
+
+    def os = System.getProperty("os.name").toLowerCase()
+    if (os.contains("windows")) {
+        commandLine 'cmd', '/X', '/C', 'npm', 'install'
+    } else if (os.contains("mac os")) {
+        commandLine 'npm', 'install'
+    } else {
+        //on linux
+        commandLine 'npm', 'install'
+    } // assume Linux
+}
+
+task bower_install(type: Exec) {
+    workingDir 'src/main'
+
+    def os = System.getProperty("os.name").toLowerCase()
+    if (os.contains("windows")) {
+        commandLine 'cmd', '/X', '/C', "$workingDir/node_modules/.bin/bower", 'install'
+    } else if (os.contains("mac os")) {
+        commandLine "$workingDir/node_modules/./bin/bower", 'install'
+    } else {
+        //on linux
+        commandLine "$workingDir/node_modules/./bin/bower", 'install'
+    } // assume Linux
+}
+
+task karma_cli_install(type: Exec) {
+    workingDir 'src/main'
+
+    def os = System.getProperty("os.name").toLowerCase()
+    if (os.contains("windows")) {
+        commandLine 'cmd', '/X', '/C', 'npm', 'install', '-g', 'karma-cli'
+    } else if (os.contains("mac os")) {
+        commandLine 'npm', 'install', '-g', 'karma-cli'
+    } else {
+        commandLine 'npm', 'install', '-g', 'karma-cli'
+    } // assume Linux
+}
+
+task grunt_cli_install(type: Exec) {
+    workingDir 'src/main'
+
+    def os = System.getProperty("os.name").toLowerCase()
+    if (os.contains("windows")) {
+        commandLine 'cmd', '/X', '/C', 'npm', 'install', '-g', 'grunt-cli'
+    } else if (os.contains("mac os")) {
+        commandLine 'npm', 'install', '-g', 'grunt-cli'
+    } else {
+        commandLine 'npm', 'install', '-g', 'grunt-cli'
+    } // assume Linux
+}
