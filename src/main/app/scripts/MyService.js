@@ -8,7 +8,7 @@ var SpaAppModule;
         function MyService($http) {
         }
         MyService.prototype.doSomething = function () {
-            var a = "Hi2!";
+            var a = "Hi4!";
             console.log(a);
             return a;
         };

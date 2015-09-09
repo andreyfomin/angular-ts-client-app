@@ -1,5 +1,7 @@
 module.exports = function (grunt) {
 
+    grunt.loadNpmTasks('grunt-contrib-clean');
+
     grunt.loadNpmTasks('grunt-contrib-copy');
 
     grunt.loadNpmTasks('grunt-typescript');
@@ -17,19 +19,22 @@ module.exports = function (grunt) {
 
     grunt.initConfig({
 
+
+        clean: ["build"],
+
         copy:{
             main:{
                 expand: true,
                 cwd: 'app/',
                 src: '**/*.html',
-                dest: '../../build/'
+                dest: 'build/'
             }
         },
 
         typescript: {
             base: {
                 src: ['app/**/*.ts'],
-                dest: '../../build/js/app.js',
+                dest: 'build/js/app.js',
                 options: {
                     module: 'amd' //or commonjs
                 }
@@ -42,16 +47,16 @@ module.exports = function (grunt) {
                     sourceMap: true,
                 },
                 files: {
-                    '../../build/js/app.min.js': ['../../build/js/app.js'],
-                    '../../build/js/_bower.min.js': ['../../build/js/_bower.js']
+                    'build/js/app.min.js': ['build/js/app.js'],
+                    'build/js/_bower.min.js': ['build/js/_bower.js']
                 }
             }
         },
 
         bower_concat: {
             all: {
-                dest: '../../build/js/_bower.js',
-                cssDest: '../../build/css/_bower.css',
+                dest: 'build/js/_bower.js',
+                cssDest: 'build/css/_bower.css',
                 mainFiles: {
                     'bootstrap': 'dist/css/bootstrap.css',
                     'font-awesome': ['css/font-awesome.css','fonts/*']
@@ -61,18 +66,18 @@ module.exports = function (grunt) {
 
         bower: {
             dev: {
-                dest: '../../build',
+                dest: 'build',
                 options: {
                     ignorePackages: ['jquery','angular'],
                     packageSpecific: {
                         'bootstrap': {
-                            dest: '../../build',
+                            dest: 'build',
                             files: [
                                 "fonts/**"
                             ]
                         },
                         'font-awesome': {
-                            dest: '../../build',
+                            dest: 'build',
                             files: [
                                 "fonts/**"
                             ]
@@ -102,7 +107,7 @@ module.exports = function (grunt) {
             server: {  // <--- Run a local server on :8089
                 options: {
                     port: 8089,
-                    base: '../../build/',
+                    base: 'build/',
                     livereload: true
                 }
             }
@@ -118,7 +123,7 @@ module.exports = function (grunt) {
                 files: [
                     { src: [
                         'bower_components/angular/angular.js',
-                        '../../build/js/app.js',
+                        'build/js/app.js',
                         'test/**/*.js'] }
                 ]
             }
@@ -131,7 +136,9 @@ module.exports = function (grunt) {
         grunt.log.writeln("Output path: " + grunt.option("target"));
     });
 
-    grunt.registerTask('default', ['typescript', 'bower_concat', 'bower', 'uglify', 'copy', 'karma']);
+    grunt.registerTask('default', ['build_all']);
+    grunt.registerTask('build_all', ['clean', 'typescript', 'bower_concat', 'bower', 'uglify', 'copy', 'karma']);
+
     grunt.registerTask('server', ['typescript', 'connect', 'open', 'watch']);
     grunt.registerTask('test', ['karma']);
 }

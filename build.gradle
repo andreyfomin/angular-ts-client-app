@@ -58,3 +58,10 @@ task grunt_cli_install(type: Exec) {
         commandLine 'npm', 'install', '-g', 'grunt-cli'
     } // assume Linux
 }
+
+task install_all_cli() {}
+
+install_all_cli.dependsOn(
+        grunt_cli_install,
+        karma_cli_install
+)
